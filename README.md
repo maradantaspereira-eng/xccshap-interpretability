@@ -3,6 +3,13 @@
 ## Resumo
 Este repositório apresenta a implementação do método XCCSHAP (Explainable Cluster-Centric SHAP). A metodologia consiste na decomposição de modelos de aprendizado de máquina baseados em árvores em regras de decisão legíveis, utilizando agrupamento local e modelos substitutos para a representação das predições.
 
+## Ausência de Pré-processamento e Origem dos Dados
+Neste pipeline, a etapa de pré-processamento bruto (tratamento de valores nulos, normalização de escala, limpeza de outliers) foi omitida intencionalmente. O modelo consome uma base de dados serializada (`uci_dataset_222.pkl`) que já foi previamente curada e pré-processada.
+
+O arquivo foi extraído do repositório oficial da metodologia: [xccshap - uci_dataset](https://github.com/rupensa/xccshap/tree/main/uci_dataset).
+
+**Origem do dataset:** O arquivo `222` corresponde ao Bank Marketing Dataset (Repositório UCI). Trata-se de uma base de dados reais referente a campanhas de marketing direto (ligações telefônicas) de uma instituição bancária portuguesa. A variável alvo indica se o cliente aderiu ou não a um produto de depósito a prazo.
+
 ## Metodologia
 
 O processo de análise é dividido em cinco etapas:
