@@ -1,33 +1,58 @@
 # Interpretabilidade de Modelos XGBoost via Agrupamento de Explicações SHAP (NMASHAP) e Indução de Árvores Substitutas Rasas
 
-Este projeto apresenta uma metodologia para a extração de regras legíveis por humanos a partir de modelos complexos "caixa-preta" (XGBoost) utilizando o pipeline **XCCSHAP**.
+## Resumo Executivo
 
-## 🚀 Visão Geral
+Este projeto implementa o pipeline **XCCSHAP (Explainable Cluster-Centric SHAP)**, uma metodologia robusta para a decomposição e auditoria de modelos de aprendizado de máquina do tipo "caixa-preta". O foco principal é a transição de previsões complexas de conjuntos (Ensembles) para regras de decisão discretas e interpretáveis, preservando a fidelidade local através de modelagem substituta.
 
-O projeto utiliza o dataset da UCI e aplica as seguintes etapas:
-1. **Treinamento do Modelo Base:** Utilização do algoritmo XGBoost para alta performance preditiva.
-2. **Explicabilidade SHAP:** Cálculo das contribuições marginais de cada atributo para as predições.
-3. **Transformação NMASHAP:** Normalização por magnitude local das explicações SHAP.
-4. **Agrupamento Latente (K-Means):** Identificação de perfis de decisão similares no espaço de explicabilidade.
-5. **Modelos Substitutos (Surrogate Trees):** Indução de Árvores de Decisão rasas para cada cluster, permitindo a extração de regras de negócio em texto.
+---
 
-## 📊 Visualizações
+## Arquitetura da Metodologia
 
-O pipeline gera diversas visualizações para auditoria:
-- Matriz de Importância de Atributos por Cluster.
-- Projeção PCA de Componentes de Explicabilidade.
-- Árvores de Decisão Renderizadas.
+O fluxo de processamento está estruturado em cinco etapas fundamentais de engenharia de dados e modelagem estatística:
 
-## 🛠️ Tecnologias
+### 1. Ingestão de Dados e Modelagem Base
+Fase de provisionamento de dependências e indução do classificador primário utilizando o algoritmo **XGBoost**. O modelo é otimizado para performance preditiva antes da extração de explicabilidade.
 
-- Python 3.x
-- XGBoost
-- SHAP
-- Scikit-learn
-- Matplotlib / Seaborn
+### 2. Decomposição de Atributos via SHAP
+Cálculo das contribuições marginais (Shapley Values) para cada instância do dataset. Esta etapa mapeia a importância de cada atributo no espaço de predição do modelo.
 
-## 📂 Estrutura do Repositório
+### 3. Transformação NMASHAP e Espaço Latente
+Aplicação da técnica **NMASHAP (Normalized Magnitude SHAP)** para normalização das explicabilidades por magnitude local. Esta transformação é crítica para mitigar vieses de escala e preparar os dados para o particionamento não supervisionado.
 
-- `xccshap_surrogate_trees.ipynb`: Notebook principal com todo o pipeline.
-- `xccshap/`: Pasta contendo os datasets utilizados.
-- `*.png`: Gráficos e visualizações geradas durante a execução.
+### 4. Agrupamento Local (K-Means)
+Utilização de **K-Means Clustering** sobre os vetores NMASHAP para identificar perfis de decisão latentes. O objetivo é segmentar a superfície de resposta do modelo em clusters com comportamentos de explicabilidade homogêneos.
+
+### 5. Indução de Modelos Substitutos (Surrogate Models)
+Indução de **Árvores de Decisão de Baixa Profundidade** (Shallow Trees) para cada cluster identificado. Esta etapa converte a lógica interna do XGBoost em regras de negócio em formato textual e visual, facilitando a auditoria e conformidade.
+
+---
+
+## Entregas Técnicas e Visualizações
+
+O pipeline gera artefatos visuais de alta densidade informativa para suporte à decisão:
+- **Análise de Variância de Atributos:** Matrizes de importância média por cluster.
+- **Topologia de Grupos:** Projeções via PCA para validação da separação dos perfis de decisão.
+- **Renderização de Fluxogramas:** Diagramas topológicos das árvores substitutas rasas.
+
+---
+
+## Stack Tecnológica
+
+- **Core:** Python 3.x
+- **Modelagem Base:** XGBoost
+- **Explicabilidade:** SHAP
+- **Manuseio de Dados:** Pandas, Numpy
+- **Aprendizado Estatístico:** Scikit-learn (K-Means / Decision Trees)
+- **Visualização:** Matplotlib, Seaborn
+
+---
+
+## Configuração do Ambiente
+
+Para replicar o ambiente de desenvolvimento e as análises, instale as dependências via:
+
+```bash
+pip install -r requirements.txt
+```
+
+O pipeline completo pode ser executado através do notebook: `xccshap_surrogate_trees.ipynb`.
