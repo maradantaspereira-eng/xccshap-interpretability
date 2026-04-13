@@ -1,58 +1,39 @@
-# Interpretabilidade de Modelos XGBoost via Agrupamento de Explicações SHAP (NMASHAP) e Indução de Árvores Substitutas Rasas
+# Interpretabilidade de Modelos XGBoost: Agrupamento de Explicações via NMASHAP e Árvores Substitutas
 
-## Resumo Executivo
+## Resumo
+Este repositório apresenta a implementação do método XCCSHAP (Explainable Cluster-Centric SHAP). A metodologia consiste na decomposição de modelos de aprendizado de máquina baseados em árvores em regras de decisão legíveis, utilizando agrupamento local e modelos substitutos para a representação das predições.
 
-Este projeto implementa o pipeline **XCCSHAP (Explainable Cluster-Centric SHAP)**, uma metodologia robusta para a decomposição e auditoria de modelos de aprendizado de máquina do tipo "caixa-preta". O foco principal é a transição de previsões complexas de conjuntos (Ensembles) para regras de decisão discretas e interpretáveis, preservando a fidelidade local através de modelagem substituta.
+## Metodologia
 
----
+O processo de análise é dividido em cinco etapas:
 
-## Arquitetura da Metodologia
+### 1. Modelo Base
+Treinamento e ajuste do classificador XGBoost. O modelo é processado para atingir a convergência preditiva antes da análise de explicabilidade.
 
-O fluxo de processamento está estruturado em cinco etapas fundamentais de engenharia de dados e modelagem estatística:
+### 2. Vetores de Atribuição (SHAP)
+Cálculo dos valores de Shapley para quantificar a contribuição individual de cada variável nas saídas do modelo.
 
-### 1. Ingestão de Dados e Modelagem Base
-Fase de provisionamento de dependências e indução do classificador primário utilizando o algoritmo **XGBoost**. O modelo é otimizado para performance preditiva antes da extração de explicabilidade.
+### 3. Normalização NMASHAP
+Aplicação da transformação de magnitude local (NMASHAP). Esta etapa padroniza os vetores de importância, preparando os dados para o processo de segmentação.
 
-### 2. Decomposição de Atributos via SHAP
-Cálculo das contribuições marginais (Shapley Values) para cada instância do dataset. Esta etapa mapeia a importância de cada atributo no espaço de predição do modelo.
+### 4. Agrupamento (K-Means)
+Particionamento dos dados em clusters baseados nos perfis de explicabilidade NMASHAP. O objetivo é identificar padrões de decisão no espaço de atributos.
 
-### 3. Transformação NMASHAP e Espaço Latente
-Aplicação da técnica **NMASHAP (Normalized Magnitude SHAP)** para normalização das explicabilidades por magnitude local. Esta transformação é crítica para mitigar vieses de escala e preparar os dados para o particionamento não supervisionado.
+### 5. Árvores Substitutas
+Treinamento de árvores de decisão de profundidade limitada para cada cluster identificado. O resultado é a extração de regras lógicas que descrevem o modelo original em subconjuntos específicos dos dados.
 
-### 4. Agrupamento Local (K-Means)
-Utilização de **K-Means Clustering** sobre os vetores NMASHAP para identificar perfis de decisão latentes. O objetivo é segmentar a superfície de resposta do modelo em clusters com comportamentos de explicabilidade homogêneos.
+## Artefatos Gerados
+- Estatísticas de importância de atributos por cluster.
+- Análise de componentes principais (PCA) dos vetores de explicabilidade.
+- Diagramas das árvores substitutas geradas.
 
-### 5. Indução de Modelos Substitutos (Surrogate Models)
-Indução de **Árvores de Decisão de Baixa Profundidade** (Shallow Trees) para cada cluster identificado. Esta etapa converte a lógica interna do XGBoost em regras de negócio em formato textual e visual, facilitando a auditoria e conformidade.
+## Tecnologias e Requisitos
+- Python 3.x
+- Bibliotecas: XGBoost, SHAP, Scikit-learn, Pandas, Numpy, Matplotlib, Seaborn.
 
----
-
-## Entregas Técnicas e Visualizações
-
-O pipeline gera artefatos visuais de alta densidade informativa para suporte à decisão:
-- **Análise de Variância de Atributos:** Matrizes de importância média por cluster.
-- **Topologia de Grupos:** Projeções via PCA para validação da separação dos perfis de decisão.
-- **Renderização de Fluxogramas:** Diagramas topológicos das árvores substitutas rasas.
-
----
-
-## Stack Tecnológica
-
-- **Core:** Python 3.x
-- **Modelagem Base:** XGBoost
-- **Explicabilidade:** SHAP
-- **Manuseio de Dados:** Pandas, Numpy
-- **Aprendizado Estatístico:** Scikit-learn (K-Means / Decision Trees)
-- **Visualização:** Matplotlib, Seaborn
-
----
-
-## Configuração do Ambiente
-
-Para replicar o ambiente de desenvolvimento e as análises, instale as dependências via:
-
+## Utilização
+Instalação das dependências:
 ```bash
 pip install -r requirements.txt
 ```
-
-O pipeline completo pode ser executado através do notebook: `xccshap_surrogate_trees.ipynb`.
+Execução do pipeline: `xccshap_surrogate_trees.ipynb`.
