@@ -1,6 +1,12 @@
 # XCCSHAP Interpretability
 
-Implementacao de interpretabilidade para modelos XGBoost baseada em SHAP values, co-clustering PB-tauCC e arvores substitutas rasas.
+Implementacao de um pipeline de interpretabilidade para modelos XGBoost, com foco em explicacoes globais e locais de alta legibilidade. A abordagem combina SHAP values, co-clustering PB-tauCC e arvores substitutas rasas para transformar um modelo opaco em regras de decisao auditaveis.
+
+## Sobre
+
+Este projeto implementa um pipeline completo de interpretabilidade para modelos XGBoost, baseado na abordagem XCCSHAP. A solucao integra SHAP values, normalizacao NMASHAP, co-clustering PB-tauCC e arvores substitutas rasas para converter decisoes de um modelo opaco em regras legiveis e auditaveis.
+
+O fluxo cobre analise global e local, com metricas de fidelidade e compreensibilidade. A proposta e disponibilizar uma base tecnica reprodutivel para avaliacao, documentacao e governanca de modelos em cenarios reais de classificacao tabular.
 
 ## Referencia
 
