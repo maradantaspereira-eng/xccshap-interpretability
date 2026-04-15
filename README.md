@@ -57,6 +57,18 @@ Recomendado:
 - Python 3.10+
 - Pip atualizado
 
+## Bibliotecas Utilizadas
+
+- xgboost==2.0.3
+- shap==0.46.0
+- pandas
+- numpy
+- scikit-learn
+- matplotlib
+- seaborn
+- pydotplus
+- XCCShap (modulo clonado do repositorio oficial)
+
 Instalacao:
 
 ```bash
